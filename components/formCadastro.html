@@ -1,0 +1,53 @@
+<form action="" method="get">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <fieldset class="border rounded border-dark p-3">
+                    <legend>Cadastro de Usuários</legend>
+
+                    <div class="mb-2">
+                        <div class="mb-2">
+                            <input class="form-control " type="number" placeholder="Número da Loja" name="numero_loja">
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="number" placeholder="Código do funcionário Fcerta"
+                                name="codigo_func_fcerta">
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="text" placeholder="Nome Completo" name="nome_completo">
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="text" placeholder="Login Fcerta" name="login_fcerta">
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="password" placeholder="Senha: 1234" readonly>
+                        </div>
+                        <div>
+                            <label class="form-label" for="nivel">Nível</label>
+
+                            <input class="form-range" min="1" max="3" type="range" name="nivel" id="nivel"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>2</output>
+                        </div>
+                        <!--
+                <div class="form-check">
+                    
+                    <input class="form-check-input" type="checkbox" id="ativo" name="ativo">
+                    <label class="form-check-label" for="ativo">Ativo?</label>
+
+                </div>
+                -->
+                    </div>
+                    <div class="row">
+                        <div class="btn-group">
+                            <button type="" id="salvar" class="btn btn-sm btn-success">Salvar</button>
+                            <button type="" id="voltar" class="btn btn-sm btn-warning">Voltar</button>
+                        </div>
+                        <div id="resultado_salvar"></div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</form>
