@@ -2,7 +2,7 @@
 class Db {
     public static function getDb() {
         try {
-            $conn = mysqli_connect("localhost","root","Safepcnmdmd1976","nivelacesso");
+            $conn = mysqli_connect("localhost","root","<senha>","<nome_bd>");
            
             return $conn;
         } catch(Exception $e) {
