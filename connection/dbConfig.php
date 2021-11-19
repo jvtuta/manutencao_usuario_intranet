@@ -21,12 +21,16 @@ class Usuario {
     public static function insert(mysqli $db, Array $values) {
         $query = "insert into usuarios(cdcon,cdfun,nome,usuario,senha,nivel,loja) 
         values(".$values[0].",".$values[1].",'".$values[2]."','".$values[3]."',"."SHA1('1234')".",".$values[4].",".$values[0].")";
-        $db->query($query);
+        try {
+            $db->query($query);
+        } catch ( Exception $error ) {
+            echo $error->getMessage();
+        }
         //$erro = [$db->error,'teste',$values];
         //echo json_encode($erro);
     }
 
-   public static function update(mysqli $db, $coluna, $id, $dado) {
+   public function update(mysqli $db, $coluna, $id, $dado) {
        if($coluna == 'senha') {
             $query = "update usuarios set senha = SHA1('1234') where id=".$id;
             $db->query($query);

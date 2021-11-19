@@ -1,8 +1,11 @@
 <template>
   <div>
     <v-app-bar dark>
-      <v-img src="../assets/logo.png" max-width="60"></v-img>
-      <v-app-bar-title>Manutenção de usuários</v-app-bar-title>
+      <a href="http://memoriaram.com.br/" target="_blank">
+        <v-img src="../../assets/logo.png" max-width="200" class="mr-5"></v-img>
+      </a>
+      
+      <v-app-bar-title class="title-header">Manutenção de usuários</v-app-bar-title>
 
       
     </v-app-bar>
@@ -13,5 +16,6 @@
 export default {};
 </script>
 
-<style >
+<style>
+
 </style>
