@@ -1,18 +1,18 @@
 <?php 
 
 abstract class Route {
-    public $routeName, $route;
+    public $name;
     protected $controller, $path, $routes;
     
     
     public function __construct($routeName, $controller, $path)
     {
-        $this->routeName = $routeName;
-        $this->controller = $controller;
-        $this->path = parse_url($path, PHP_URL_QUERY);
+        $this->name = $routeName;
+        $this->path = $path;
+        $this->match(parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY), $controller);
     }
-
     
+    abstract protected function match($actual, $controller);
 }
 
 
