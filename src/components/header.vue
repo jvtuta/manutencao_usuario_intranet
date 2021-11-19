@@ -5,7 +5,7 @@
         <v-img src="../../assets/logo.png" max-width="200" class="mr-5"></v-img>
       </a>
       
-      <v-app-bar-title class="title-header">Manutenção de usuários</v-app-bar-title>
+      <span class="text-h5">Manutenção de usuários</span>
 
       
     </v-app-bar>
