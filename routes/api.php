@@ -1,12 +1,11 @@
 <?php
-require "../bootstrap/Route.php";
+require "./bootstrap/autoload.php";
+
 
 class Routes extends Route  {
     // Rotas
-      
     protected function match($actual, $controller) 
     {
-        
         if($this->path === $actual ) {
             $controller();
         }
