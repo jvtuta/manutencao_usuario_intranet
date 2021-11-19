@@ -14,7 +14,15 @@ class Routes extends Route  {
 };
 
 new Routes('user', function(){
-    echo 'teste';
+    echo 'user';
 }, 'user');
+
+new Routes('user-save', function() {
+    echo 'user-save';
+}, 'user-save');
+
+new Routes('user-update', function() {
+    echo 'user-update';
+}, 'user-update');
 
 ?>
