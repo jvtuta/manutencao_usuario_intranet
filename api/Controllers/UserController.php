@@ -12,13 +12,13 @@ class UserController {
     public static function save($request)
     {
         $usuario = new User();
-        $usuario->setValues('nome', $request['nome'] );
+        $usuario->setValues('nome', $request['name'] );
         $usuario->setValues('cdcon', $request['cdcon']);
         $usuario->setValues('cdfun', $request['cdfun']);
         $usuario->setValues('usuario', $request['usuario']);
         $usuario->setValues('senha', sha1($request['senha']));
         $usuario->setValues('nivel', $request['nivel']);
-        $usuario->setValues('loja', $request['loja']);
+        $usuario->setValues('loja', $request['cdcon']);
         $usuario->setValues('ativo', 1);
         
         $usuario->save();

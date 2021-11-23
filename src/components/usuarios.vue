@@ -13,23 +13,23 @@
       sortByText: 'Filtro:',
     }"
     :no-results-text="'Registro não encontrado'"
-    sortBy="idLoja"
+    sortBy="cdcon"
     class="elevation-6"
   >
     <!-- Dialogs de edit -->
     <!-- id loja -->
-    <template v-slot:item.idLoja="props">
+    <template v-slot:item.cdcon="props">
       <v-edit-dialog
-        :return-value.sync="props.item.idLoja"
+        :return-value.sync="props.item.cdcon"
         @save="save(props.item.id)"
         @cancel="cancel"
         @open="open"
         @close="close"
       >
-        {{ props.item.idLoja }}
+        {{ props.item.cdcon }}
         <template v-slot:input>
           <v-text-field
-            v-model="props.item.idLoja"
+            v-model="props.item.cdcon"
             label="Edit"
             single-line
             counter
@@ -38,18 +38,18 @@
       </v-edit-dialog>
     </template>
     <!-- código de funcionário -->
-    <template v-slot:item.cdFunc="props">
+    <template v-slot:item.cdfunc="props">
       <v-edit-dialog
-        :return-value.sync="props.item.cdFunc"
+        :return-value.sync="props.item.cdfunc"
         @save="save(props.item.id)"
         @cancel="cancel"
         @open="open"
         @close="close"
       >
-        {{ props.item.cdFunc }}
+        {{ props.item.cdfunc }}
         <template v-slot:input>
           <v-text-field
-            v-model="props.item.cdFunc"
+            v-model="props.item.cdfunc"
             label="Edit"
             single-line
             counter
@@ -58,18 +58,18 @@
       </v-edit-dialog>
     </template>
     <!-- Nome -->
-    <template v-slot:item.name="props">
+    <template v-slot:item.nome="props">
       <v-edit-dialog
-        :return-value.sync="props.item.name"
+        :return-value.sync="props.item.nome"
         @save="save(props.item.id)"
         @cancel="cancel"
         @open="open"
         @close="close"
       >
-        {{ props.item.name }}
+        {{ props.item.nome }}
         <template v-slot:input>
           <v-text-field
-            v-model="props.item.name"
+            v-model="props.item.nome"
             label="Edit"
             single-line
             counter
@@ -77,19 +77,19 @@
         </template>
       </v-edit-dialog>
     </template>
-    <!-- Login -->
-    <template v-slot:item.login="props">
+    <!-- usuario -->
+    <template v-slot:item.usuario="props">
       <v-edit-dialog
-        :return-value.sync="props.item.login"
+        :return-value.sync="props.item.usuario"
         @save="save(props.item.id)"
         @cancel="cancel"
         @open="open"
         @close="close"
       >
-        {{ props.item.login }}
+        {{ props.item.usuario }}
         <template v-slot:input>
           <v-text-field
-            v-model="props.item.login"
+            v-model="props.item.usuario"
             label="Edit"
             single-line
             counter
@@ -148,20 +148,20 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="newItem.name"
+                      v-model="newItem.nome"
                       label="Nome"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="newItem.idLoja"
+                      v-model="newItem.cdcon"
                       label="Loja"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="newItem.login"
-                      label="Login"
+                      v-model="newItem.usuario"
+                      label="usuario"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -172,7 +172,7 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="newItem.cdFunc"
+                      v-model="newItem.cdfunc"
                       label="Código de funcionário do fcerta"
                     ></v-text-field>
                   </v-col>
@@ -207,18 +207,18 @@ import axios from "axios";
 export default {
   data: () => ({
     headers: [
-      { text: "Loja", value: "idLoja", align: "start" },
-      { text: "Código de funcionário(Fórmula Certa)", value: "cdFunc" },
-      { text: "Nome", value: "name" },
-      { text: "Login", value: "login" },
+      { text: "Loja", value: "cdcon", align: "start" },
+      { text: "Código de funcionário(Fórmula Certa)", value: "cdfunc" },
+      { text: "Nome", value: "nome" },
+      { text: "Usuario", value: "usuario" },
       { text: "Nível", value: "nivel" },
       { text: "Ativo", value: "ativo" },
       { text: "Ações", value: "actions", sortable: false },
     ],
     newItem: {
-      name: '',
-      login: '',
-      idLoja: '',
+      nome: '',
+      usuario: '',
+      cdcon: '',
       cdfunc: '',
       nivel: '',
       ativo: 1
@@ -226,7 +226,7 @@ export default {
     dialog: false,
     usuarios: [],
     search: "",
-    api: "http://10.10.1.241/apps/manutencao-usuario/api/",
+    api: "http://10.10.1.241/apps/manutencao-usuario/?v1/",
   }),
 
   methods: {
@@ -236,11 +236,12 @@ export default {
 
     resetPass(id) {
       const config = {
-        url: this.url,
+        url: this.url +'users-update',
         method: "post",
         data: {
-          resetPass: true,
           id,
+          column: 'senha',
+          data: 'senha'
         },
       };
       try {
@@ -255,7 +256,23 @@ export default {
       if(itemId === undefined) {
         this.dialog = false
         this.usuarios.push(this.newItem)
+
       }
+      
+      this.newItem
+
+      const config = {
+        url: this.api + 'user-save',
+        method: 'post',
+        headers: {},
+        data: this.newItem
+      }
+      try{
+        await axios(config);
+      }catch(err){
+        console.log(err);
+      }
+      
       
     },
 
@@ -274,7 +291,8 @@ export default {
     async getUsers() {
       const config = {
         method: "get",
-        url: this.api,
+        url: this.api + 'users',
+        // url: 'http://10.10.1.241/apps/manutencao-usuario/api/'
       };
 
       try {
@@ -284,10 +302,10 @@ export default {
           const obj = {};
           item.forEach(() => {
             obj.id = item[0];
-            obj.idLoja = item[1];
-            obj.cdFunc = item[2];
-            obj.name = item[3];
-            obj.login = item[4];
+            obj.cdcon = item[1];
+            obj.cdfunc = item[2];
+            obj.nome = item[3];
+            obj.usuario = item[4];
             obj.nivel = item[6];
             obj.ativo = item[8];
           });
@@ -297,7 +315,6 @@ export default {
         // console.log(responseObj)
 
         this.usuarios = responseObj;
-        console.log(this.usuarios);
       } catch (err) {
         console.log(err);
       }
