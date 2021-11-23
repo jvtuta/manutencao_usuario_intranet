@@ -21,7 +21,7 @@
     <template v-slot:item.cdcon="props">
       <v-edit-dialog
         :return-value.sync="props.item.cdcon"
-        @save="save(props.item.id)"
+        @save="save(props.item.id, props.item.cdcon, 'cdcon')"
         @cancel="cancel"
         @open="open"
         @close="close"
@@ -41,7 +41,7 @@
     <template v-slot:item.cdfunc="props">
       <v-edit-dialog
         :return-value.sync="props.item.cdfunc"
-        @save="save(props.item.id)"
+        @save="save(props.item.id, props.item.cdfunc, 'cdfunc')"
         @cancel="cancel"
         @open="open"
         @close="close"
@@ -61,7 +61,7 @@
     <template v-slot:item.nome="props">
       <v-edit-dialog
         :return-value.sync="props.item.nome"
-        @save="save(props.item.id)"
+        @save="save(props.item.id, props.item.nome, 'nome')"
         @cancel="cancel"
         @open="open"
         @close="close"
@@ -81,7 +81,7 @@
     <template v-slot:item.usuario="props">
       <v-edit-dialog
         :return-value.sync="props.item.usuario"
-        @save="save(props.item.id)"
+        @save="save(props.item.id, props.item.usuario, 'usuario')"
         @cancel="cancel"
         @open="open"
         @close="close"
@@ -101,7 +101,7 @@
     <template v-slot:item.nivel="props">
       <v-edit-dialog
         :return-value.sync="props.item.nivel"
-        @save="save(props.item.id)"
+        @save="save(props.item.id, props.item.nivel, 'nivel')"
         @cancel="cancel"
         @open="open"
         @close="close"
@@ -120,8 +120,6 @@
 
     <template v-slot:top>
       <v-toolbar flat>
-        
-
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -133,10 +131,14 @@
         <!-- novo usuário -->
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2 ml-4" v-bind="attrs" v-on="on">
-              <v-icon>
-                mdi-plus
-              </v-icon>
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2 ml-4"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon> mdi-plus </v-icon>
             </v-btn>
           </template>
           <v-card>
@@ -176,15 +178,18 @@
                       label="Código de funcionário do fcerta"
                     ></v-text-field>
                   </v-col>
-
                 </v-row>
               </v-container>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
-              <v-btn color="blue darken-1" text @click="save(undefined)"> Salvar </v-btn>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancelar
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="save(undefined)">
+                Salvar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -195,7 +200,12 @@
       <!-- <v-icon small class="mr-2" @click="teste(item)" color="blue darken-2">
         mdi-pencil
       </v-icon> -->
-      <v-icon small class="mr-2" @click="teste(item)" color="orange darken-2">
+      <v-icon
+        small
+        class="mr-2"
+        @click="resetPass(item.id)"
+        color="orange darken-2"
+      >
         mdi-lock-open
       </v-icon>
     </template>
@@ -216,12 +226,12 @@ export default {
       { text: "Ações", value: "actions", sortable: false },
     ],
     newItem: {
-      nome: '',
-      usuario: '',
-      cdcon: '',
-      cdfunc: '',
-      nivel: '',
-      ativo: 1
+      nome: "",
+      usuario: "",
+      cdcon: "",
+      cdfunc: "",
+      nivel: "",
+      ativo: 1,
     },
     dialog: false,
     usuarios: [],
@@ -230,19 +240,15 @@ export default {
   }),
 
   methods: {
-    teste(item) {
-      console.log("teste", item);
-    },
-
     resetPass(id) {
       const config = {
-        url: this.url +'users-update',
+        url: this.url + "users-update",
         method: "post",
-        data: {
+        data: new URLSearchParams({
           id,
-          column: 'senha',
-          data: 'senha'
-        },
+          column: "senha",
+          data: "senha",
+        }),
       };
       try {
         axios(config);
@@ -251,48 +257,62 @@ export default {
       }
     },
 
-    async save(itemId) {
-      
-      if(itemId === undefined) {
-        this.dialog = false
-        this.usuarios.push(this.newItem)
+    async save(itemId, value, column) {
+      this.dialog = false;
 
+      if (itemId === undefined) {
+        this.usuarios.push(this.newItem);
+        const config = {
+          url: this.api + "user-save",
+          method: "post",
+          Headers: {
+            "Content-Type": "application/json",
+          },
+          data: new URLSearchParams({...this.newItem}),
+        };
+        try {
+          await axios(config);
+        } catch (err) {
+          console.log(err);
+        }
       }
-      
-      this.newItem
+
+      const data = new URLSearchParams({
+        id: itemId,
+        column,
+        value
+      })
 
       const config = {
-        url: this.api + 'user-save',
-        method: 'post',
-        headers: {},
-        data: this.newItem
-      }
-      try{
+        url: this.api + "user-update",
+        method: "post",
+        headers: {
+         "Content-Type": "application/x-www-form-urlencoded"
+          
+        },
+        data: data,
+      };
+
+      try {
         await axios(config);
-      }catch(err){
+      } catch (err) {
         console.log(err);
       }
-      
-      
     },
 
-    cancel() {
-    },
+    cancel() {},
 
-    open() {
-      
-    },
+    open() {},
 
     close() {
-            this.dialog = false
-
+      this.dialog = false;
     },
 
     async getUsers() {
       const config = {
         method: "get",
-        url: this.api + 'users',
-        // url: 'http://10.10.1.241/apps/manutencao-usuario/api/'
+        url: this.api + "users",
+        // url: "http://10.10.1.241/apps/manutencao-usuario/api/",
       };
 
       try {
