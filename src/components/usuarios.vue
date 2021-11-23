@@ -236,7 +236,7 @@ export default {
     dialog: false,
     usuarios: [],
     search: "",
-    api: "http://10.10.1.241/apps/manutencao-usuario/?v1/",
+    api: "http://10.10.1.241/apps/manutencao-usuario/api/?v1/",
   }),
 
   methods: {
@@ -317,7 +317,7 @@ export default {
 
       try {
         const response = await (await axios(config)).data;
-
+        
         const responseObj = response.map((item) => {
           const obj = {};
           item.forEach(() => {
@@ -332,7 +332,7 @@ export default {
           return obj;
         });
 
-        // console.log(responseObj)
+      
 
         this.usuarios = responseObj;
       } catch (err) {

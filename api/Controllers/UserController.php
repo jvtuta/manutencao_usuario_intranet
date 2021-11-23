@@ -6,7 +6,7 @@ class UserController {
     public static function index()
     {
         $usuario = new User();
-        print_r($usuario->all());
+        echo json_encode($usuario->all());
     }
     
     public static function save($request)
