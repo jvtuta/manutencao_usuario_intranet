@@ -14,8 +14,9 @@ class Route {
     
     protected function match($actual, $controller) 
     {
+
         if($this->path === $actual ) {
-            $controller();
+            $controller($_REQUEST);
         }
     }
 }

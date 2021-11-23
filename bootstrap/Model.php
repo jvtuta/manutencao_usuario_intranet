@@ -32,12 +32,6 @@ abstract class Model extends Database
         $this->columns = array_keys($this->columnsAndData);
         $this->data = array_values($this->columnsAndData);
 
-        // $this->data = array_filter($this->data, function($d) {
-        //     if(is_string($d)) {                
-        //         return `"$d"` ;
-        //     }
-        //     return $d;
-        // });
     }   
 
     public function all() 
@@ -68,19 +62,18 @@ abstract class Model extends Database
         
     }
 
-    protected function update($id, $data, $column)
+    public function update($id, $column, $data)
     {   
-        
-        $data = implode(',',$data);
 
         $queryString = "update ". 
             $this->table ." set ". 
-            $column . "=" . $data. 
-            'where id ='. $id;
+            $column . " = '" . $data. 
+            "' where id = ". $id ;
         try {
+            mysqli_report(MYSQLI_REPORT_ALL);
             $this->query($queryString);
         } catch (Exception $err) {
-            throw $err->getMessage();
+            echo $err->getMessage();
         }
         
     }

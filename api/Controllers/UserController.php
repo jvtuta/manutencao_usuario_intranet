@@ -3,24 +3,37 @@ require __DIR__.'/../Models/User.php';
 
 class UserController {
     
-    public static function save()
-    {
-        $usuario = new User();
-        $usuario->setValues('nome', 'teste');
-        $usuario->setValues('cdcon', 3342);
-        $usuario->setValues('login', 'teste');
-        $usuario->setValues('usuario', 'teste');
-        $usuario->setValues('senha', 'teste');
-        $usuario->setValues('nivel', 2);
-        $usuario->setValues('loja', 1);
-        
-        $usuario->save();
-    }
-
     public static function index()
     {
         $usuario = new User();
         print_r($usuario->all());
     }
+    
+    public static function save($request)
+    {
+        $usuario = new User();
+        $usuario->setValues('nome', $request['nome'] );
+        $usuario->setValues('cdcon', $request['cdcon']);
+        $usuario->setValues('cdfun', $request['cdfun']);
+        $usuario->setValues('usuario', $request['usuario']);
+        $usuario->setValues('senha', sha1($request['senha']));
+        $usuario->setValues('nivel', $request['nivel']);
+        $usuario->setValues('loja', $request['loja']);
+        $usuario->setValues('ativo', 1);
+        
+        $usuario->save();
+    }
+
+    public static function update($id, $column, $data) 
+    {
+        $usuario = new User();
+        if($column === 'senha') {
+            $column = 'senhapadrao';
+            $data = 1;
+        }
+        return $usuario->update($id, $column, $data);
+    }
+
+    
 }
 ?>
