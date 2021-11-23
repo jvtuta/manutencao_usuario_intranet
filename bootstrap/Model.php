@@ -1,52 +1,81 @@
 <?php
 
-require '../database/config.php';
+require __DIR__.'/../database/config.php';
 
-abstract class Model extends Database implements ModelInterface
+abstract class Model extends Database 
 {
+    protected $columns, $data;
+    protected $columnsAndData = [];
+
+    public function __construct() 
+    {
+        if(!$this->table) {
+            throw new Exception('Atributo tabela não foi setado!');
+        }
+    }
 
     public function getColumn()
     {
-        return $this->column;
-    }
-    public function getDado()
-    {
-        return $this->dado;
-    }
-    public function getId()
-    {
-        return $this->id;
+        return $this->columns;
     }
 
-    protected function all() 
+    public function getData()
     {
-        $this->query('select * from '.$this->table);
+        return $this->data;
+    }
+
+    public function setValues($key, $value) 
+    {
+
+        $this->columnsAndData[$key] = $value;
+
+        $this->columns = array_keys($this->columnsAndData);
+        $this->data = array_values($this->columnsAndData);
+
+        // $this->data = array_filter($this->data, function($d) {
+        //     if(is_string($d)) {                
+        //         return `"$d"` ;
+        //     }
+        //     return $d;
+        // });
+    }   
+
+    public function all() 
+    {
+        
+        return $this->query('select * from '.$this->table)->fetch_all();
     }
 
     protected function insert()
     {
         $columns = implode(',', $this->columns);
-        $data = implode(',', $this->data);
+        
+        $data = implode("','", $this->data);
 
         $queryString = "insert into ".
             $this->table."(".$columns.") 
-            . values(".$data.")";
+            values('".
+                $data
+            ."')";
+
         try {
+            mysqli_report(MYSQLI_REPORT_ALL);
             $this->query($queryString);
+            
         } catch ( Exception $error ){
             echo $error->getMessage();
         }
         
     }
 
-    protected function update($id, $data)
+    protected function update($id, $data, $column)
     {   
-        $columns = implode(',', $this->column);
+        
         $data = implode(',',$data);
 
         $queryString = "update ". 
             $this->table ." set ". 
-            $columns . "=" . $data. 
+            $column . "=" . $data. 
             'where id ='. $id;
         try {
             $this->query($queryString);
@@ -56,12 +85,11 @@ abstract class Model extends Database implements ModelInterface
         
     }
 
+    public function save() 
+    {
+        return $this->insert();
+    }
+
     
 }
 
-interface ModelInterface
-{
-    public function getColumn();
-    public function getDado();
-    public function getId();
-}

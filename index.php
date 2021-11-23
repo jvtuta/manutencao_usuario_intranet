@@ -1,1 +1,5 @@
-routes/api.php
+<?php
+require(__DIR__.'/autoload.php');
+
+
+?>

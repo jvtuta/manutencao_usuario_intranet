@@ -1,9 +1,9 @@
-<?php 
+<?php
 
-abstract class Route {
+
+class Route {
     public $name;
     protected $controller, $path, $routes;
-    
     
     public function __construct($routeName, $controller, $path)
     {
@@ -12,7 +12,12 @@ abstract class Route {
         $this->match(parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY), $controller);
     }
     
-    abstract protected function match($actual, $controller);
+    protected function match($actual, $controller) 
+    {
+        if($this->path === $actual ) {
+            $controller();
+        }
+    }
 }
 
 

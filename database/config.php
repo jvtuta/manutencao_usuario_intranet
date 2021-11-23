@@ -1,33 +1,37 @@
 <?php
 
 abstract class Database {
-    public function __construct()
-    {
-        $this->db();
-    }
 
-    protected function db() 
+    protected function conn() 
     {
         
         define('username', 'root');
-        define('hostname', 'localhost');
-        define('password', 'Safepcnmdmd1976');
+        define('hostname', '127.0.0.1');
+        define('password', 'root');
         define('database', 'nivelacesso');
 
         try {   
-            $conn = mysqli_connect(hostname, username, password, database);
             
+            $conn = new mysqli(
+                hostname, 
+                username, 
+                password, 
+                database
+            );
+            if(!$conn) {
+                die('Não foi possível concetar');
+            }
             return $conn;
-
         } catch(Exception $err) {
             throw $err->getMessage();
         }
     }
 
-    protected function query($q) 
+    protected function query($q)
     {
-        return $this->db->query($q);
+        return $this->conn()->query($q);
     }
+
 }
 
 ?>
