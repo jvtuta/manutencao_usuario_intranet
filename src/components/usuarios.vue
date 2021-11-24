@@ -242,7 +242,7 @@ export default {
   methods: {
     resetPass(id) {
       const config = {
-        url: this.url + "users-update",
+        url: this.api + "users-update",
         method: "post",
         data: new URLSearchParams({
           id,
