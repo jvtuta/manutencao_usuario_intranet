@@ -15,7 +15,7 @@ new Route('user-update', function($params) {
     return UserController::update(
         $params['id'],
         $params['column'],
-        $params['data']
+        $params['value']
     );  
 },'v1/user-update')
 
