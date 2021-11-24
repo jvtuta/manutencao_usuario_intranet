@@ -28,6 +28,7 @@ class UserController {
     {
         $usuario = new User();
         if($column === 'senha') {
+            
             $column = 'senhapadrao';
             $data = 1;
         }
