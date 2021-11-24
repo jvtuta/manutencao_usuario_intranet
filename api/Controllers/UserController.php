@@ -12,7 +12,7 @@ class UserController {
     public static function save($request)
     {
         $usuario = new User();
-        $usuario->setValues('nome', $request['name'] );
+        $usuario->setValues('nome', $request['nome'] );
         $usuario->setValues('cdcon', $request['cdcon']);
         $usuario->setValues('cdfun', $request['cdfun']);
         $usuario->setValues('usuario', $request['usuario']);
@@ -28,7 +28,7 @@ class UserController {
     {
         $usuario = new User();
         if($column === 'senha') {
-            
+            $usuario->update($id, $column, sha1(1234));
             $column = 'senhapadrao';
             $data = 1;
         }
