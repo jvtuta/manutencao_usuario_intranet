@@ -38,18 +38,18 @@
       </v-edit-dialog>
     </template>
     <!-- código de funcionário -->
-    <template v-slot:item.cdfunc="props">
+    <template v-slot:item.cdfun="props">
       <v-edit-dialog
-        :return-value.sync="props.item.cdfunc"
-        @save="save(props.item.id, props.item.cdfunc, 'cdfunc')"
+        :return-value.sync="props.item.cdfun"
+        @save="save(props.item.id, props.item.cdfun, 'cdfun')"
         @cancel="cancel"
         @open="open"
         @close="close"
       >
-        {{ props.item.cdfunc }}
+        {{ props.item.cdfun }}
         <template v-slot:input>
           <v-text-field
-            v-model="props.item.cdfunc"
+            v-model="props.item.cdfun"
             label="Edit"
             single-line
             counter
@@ -174,7 +174,7 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="newItem.cdfunc"
+                      v-model="newItem.cdfun"
                       label="Código de funcionário do fcerta"
                     ></v-text-field>
                   </v-col>
@@ -218,7 +218,7 @@ export default {
   data: () => ({
     headers: [
       { text: "Loja", value: "cdcon", align: "start" },
-      { text: "Código de funcionário(Fórmula Certa)", value: "cdfunc" },
+      { text: "Código de funcionário(Fórmula Certa)", value: "cdfun" },
       { text: "Nome", value: "nome" },
       { text: "Usuario", value: "usuario" },
       { text: "Nível", value: "nivel" },
@@ -229,7 +229,7 @@ export default {
       nome: "",
       usuario: "",
       cdcon: "",
-      cdfunc: "",
+      cdfun: "",
       nivel: "",
       ativo: 1,
     },
@@ -272,6 +272,7 @@ export default {
         };
         try {
           await axios(config);
+          return;
         } catch (err) {
           console.log(err);
         }
@@ -323,7 +324,7 @@ export default {
           item.forEach(() => {
             obj.id = item[0];
             obj.cdcon = item[1];
-            obj.cdfunc = item[2];
+            obj.cdfun = item[2];
             obj.nome = item[3];
             obj.usuario = item[4];
             obj.nivel = item[6];
